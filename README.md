@@ -15,9 +15,9 @@ https://monyone.github.io/Anime4K.js/
 ### Preparing
 
 ```sh
-git clone https://github.com/monyone/Anime4K.js
+git clone https://github.com/akku1139/Anime4K.js
 cd Anime4K.js
-yarn
+pnpm i
 ```
 
 ## Compile
@@ -47,3 +47,4 @@ upscaler.start(); // start upscale
 ## Credits
 
 * [Anime4K](https://github.com/bloc97/Anime4K) by [bloc97](https://github.com/bloc97)
+* Original [Anime4K.js](https://github.com/monyone/Anime4K.js) by [monyone](https://github.com/monyone)

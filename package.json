@@ -25,20 +25,13 @@
   ],
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf dist d.ts",
-    "build": "webpack --mode production",
-    "build:dev": "webpack --mode development",
+    "clean": "rm -rf dist d.ts",
+    "build": "esbuild src/index.ts --outfile=dist/anime4k.js --platform=neutral --bundle --minify",
+    "build:dev": "esbuild src/index.ts --outfile=dist/anime4k.js --platform=neutral --bundle",
     "tsc": "tsc --noEmit"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.8",
-    "@babel/preset-env": "^7.21.5",
-    "babel-loader": "^9.1.2",
-    "core-js": "^3.30.2",
-    "rimraf": "^5.0.1",
-    "ts-loader": "^9.4.2",
-    "typescript": "^5.4.5",
-    "webpack": "^5.82.1",
-    "webpack-cli": "^5.1.1"
+    "esbuild": "^0.28.0",
+    "typescript": "^5.9.3"
   }
 }
