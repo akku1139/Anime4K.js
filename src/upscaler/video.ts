@@ -21,13 +21,11 @@ export default class VideoUpscaler {
   private readonly upscaleHandler: () => void = this.upscale.bind(this);
   private upscaleTimer: number | null = null;
   private running: boolean = false;
-  private upscaleTime: number = 0;
-  private fps: number;
+
   private supported: boolean;
 
-  public constructor(fps: number, config: (new (gl: WebGLRenderingContext) => Anime4KShader)[]) {
+  public constructor(_fps: number, config: (new (gl: WebGLRenderingContext) => Anime4KShader)[]) {
     this.supported = VideoUpscaler.isSupported();
-    this.fps = fps;
     this.config = config;
   }
 
@@ -42,17 +40,15 @@ export default class VideoUpscaler {
 
   public start() {
     this.running = true;
-    this.upscaleTime = 0;
     this.upscale();
   }
   public stop() {
     this.running = false;
-    this.upscaleTime = 0;
     if (this.canvas) {
       this.canvas.style.visibility = 'hidden';
     }
     if (this.upscaleTimer == null) { return; }
-    cancelAnimationFrame(this.upscaleTimer);
+    this.video?.cancelVideoFrameCallback(this.upscaleTimer);
     this.upscaleTimer = null;
   }
 
@@ -67,14 +63,6 @@ export default class VideoUpscaler {
 
     if (!this.running) { return; }
     this.adjustCanvasSize();
-
-    const currentTime = performance.now();
-    if ((currentTime - this.upscaleTime) * this.fps < 1000) {
-      requestAnimationFrame(this.upscaleHandler);
-      return;
-    }
-    this.upscaleTime = currentTime;
-
     const gl = this.gl;
     const framebuffer = this.framebuffer;
     const ext = gl.getExtension("OES_texture_half_float_linear") && gl.getExtension("OES_texture_half_float");
@@ -124,8 +112,7 @@ export default class VideoUpscaler {
 
     gl.flush();
     this.canvas.style.visibility = 'visible';
-
-    this.upscaleTimer = requestAnimationFrame(this.upscaleHandler);
+    this.upscaleTimer = this.video.requestVideoFrameCallback(this.upscaleHandler);
   }
 
   public attachVideo(video: HTMLVideoElement, canvas: HTMLCanvasElement) {

@@ -23,7 +23,7 @@ pnpm i
 ## Compile
 
 ```sh
-yarn build
+pnpm run build
 ```
 
 ## Getting Start
